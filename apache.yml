@@ -10,9 +10,12 @@
     apt:
       name: apache2
       state: present
+    register: find_output
     notify:
     - restart apache 
     when: ansible_os_family == "Debian"
+  - debug:
+      var: find_output
   - name: intall packages
     apt:
       name: "{{ item }}"
