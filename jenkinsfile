@@ -1,0 +1,63 @@
+pipeline{
+    agent none
+    stages{
+        stage('git retrival'){
+            agent{
+                node{
+                    label "master"
+                }
+            }
+            steps{
+                echo 'Git code successfully retrieved';
+            }
+        }
+        parallel {
+            stage('AWS'){
+                agent{
+                    label "Ansible"
+                }
+                steps{
+                    echo 'AWS successfully executed'
+                }
+            }
+            stage('Azure'){
+                agent{
+                    label "master"
+                }
+                steps{
+                    echo 'Azure successfully executed'
+                }
+            }
+            stage('kubernetes'){
+                agent{
+                    label "Ansible"
+                }
+                steps{
+                    echo 'Kubernetes successfully executed'
+                }
+            }
+            stage('Docker'){
+                agent{
+                    label "master"
+                }
+                steps{
+                    echo 'Docker successfully executed'
+                }
+            }
+        }
+        stage('Deploy'){
+                agent any
+                steps{
+                    echo 'Deployed successfully executed'
+                }
+        }
+        stage('Junit'){
+                agent{
+                    label "Ansible"
+                }
+                steps{
+                    echo 'Junit successfully executed'
+                }
+            }
+    }
+}
