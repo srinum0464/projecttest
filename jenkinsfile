@@ -4,7 +4,7 @@ pipeline{
         stage('git retrival'){
             agent{
                 node{
-                    label "ansible"
+                    label "Ansible"
                 }
             }
             steps{
