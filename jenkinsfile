@@ -9,7 +9,7 @@ pipeline{
             }
             steps{
                 git branch: 'ansible', credentialsId: 'd35878c4-1821-4902-966b-5785d600c3d3', url: 'https://github.com/srinum0464/projecttest.git'
-                sh label: '', script: 'ansible-playbook /home/ansible/workspace/Git_pipeline_scripted/update.yml docker'
+                sh label: '', script: 'ansible-playbook /home/ansible/workspace/Git_pipeline_scripted/update.yml'
             }
         }
         
