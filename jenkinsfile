@@ -4,62 +4,14 @@ pipeline{
         stage('git retrival'){
             agent{
                 node{
-                    label "master"
+                    label "ansible"
                 }
             }
             steps{
-                echo 'Git code successfully retrieved';
+                git branch: 'ansible', credentialsId: 'd35878c4-1821-4902-966b-5785d600c3d3', url: 'https://github.com/srinum0464/projecttest.git'
+                sh label: '', script: 'ansible-playbook /workspace/Git_pipeline_scripted docker'
             }
         }
-        stage('Parallel Jobs'){
-        parallel {
-            stage('AWS'){
-                agent{
-                    label "Ansible"
-                }
-                steps{
-                    echo 'AWS successfully executed'
-                }
-            }
-            stage('Azure'){
-                agent{
-                    label "master"
-                }
-                steps{
-                    echo 'Azure successfully executed'
-                }
-            }
-            stage('kubernetes'){
-                agent{
-                    label "Ansible"
-                }
-                steps{
-                    echo 'Kubernetes successfully executed'
-                }
-            }
-            stage('Docker'){
-                agent{
-                    label "master"
-                }
-                steps{
-                    echo 'Docker successfully executed'
-                }
-            }
-        }
-        }
-        stage('Deploy'){
-                agent any
-                steps{
-                    echo 'Deployed successfully executed'
-                }
-        }
-        stage('Junit'){
-                agent{
-                    label "Ansible"
-                }
-                steps{
-                    echo 'Junit successfully executed'
-                }
-            }
+        
     }
 }
