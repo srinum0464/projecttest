@@ -1,0 +1,126 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Creating public subnet",
+    "Parameters":{
+         
+         "vpcid": {
+             "Description": "VPC_ID",
+             "Type": "String",
+             "Default": "10.26.0.0/16"
+         },
+         
+         "subnetrange": {
+             "Description": "SubNet_ID",
+             "Type": "String",
+             "Default": "10.26.1.0/24"
+         }
+         
+         
+    },
+    "Resources":{
+        
+        "myvpc": {
+          "Type": "AWS::EC2::VPC",
+          "Properties": {
+            "CidrBlock": { "Ref": "vpcid" }
+            }
+        },
+        
+        "mypublicsubnet": {
+          "Type": "AWS::EC2::Subnet",
+          "Properties": {
+            "AvailabilityZone": "us-east-1a",
+            "VpcId": 
+            { "Ref": "myvpc" }
+            ,
+            "CidrBlock": 
+            { "Ref": "subnetrange" }
+          }
+        },
+        
+        "myigw": {
+          "Type": "AWS::EC2::InternetGateway",
+          "Properties": {
+            
+          }
+        },
+        "AttachGateway": {
+          "Type": "AWS::EC2::VPCGatewayAttachment",
+          "Properties": {
+            "VpcId": { "Ref": "myvpc" },
+            "InternetGatewayId": { "Ref": "myigw" }
+          }
+        },
+        
+          "myrouteT": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+              "VpcId": 
+              { "Ref": "myvpc" }
+              
+              }
+          },
+          
+          "route": {
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+              "RouteTableId": 
+              { "Ref": "myrouteT" }
+              ,
+              "DestinationCidrBlock": "0.0.0.0/0",
+              "GatewayId": 
+              { "Ref": "myigw" }
+              
+            }
+          },
+          
+          "routeTableAssocName": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+              "SubnetId": 
+              { "Ref": "mypublicsubnet" }
+              ,
+              "RouteTableId": 
+              { "Ref": "myrouteT" }
+              
+            }
+          },
+          
+          "secGroupName" : {
+            "Type" : "AWS::EC2::SecurityGroup",
+            "Properties" : {
+              "GroupDescription" : "-",
+              "SecurityGroupIngress" : [ 
+                --insert rules--
+              ],
+              "VpcId" : ref-to-vpc,
+              "Tags" :  [ insert tag ]
+            }
+          },
+          
+          "ec2Volume": {
+             "Type": "AWS::EC2::Volume",
+             "Properties": {
+                "AutoEnableIO": "true|false",
+                "AvailabilityZone": "-",
+                "Encrypted": "true|false",
+                "KmsKeyId": "-",
+                "Size": "-",
+                "SnapshotId": "snap-",
+                "Tags": [
+                      {
+                          "Key": "-",
+                          "Value": "-"
+                      }
+                  ],
+                "VolumeType" : "standard|io1|gp2"
+             }
+          }
+          
+          
+          
+          
+          
+        
+    }
+}
