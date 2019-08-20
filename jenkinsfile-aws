@@ -18,7 +18,7 @@ pipeline{
                 }
             }
             steps{
-                sh label: '', script: 'aws cloudformation create-stack --stack-name myteststack --template-body file:///home/ansible/aws-path/workspace/AWS-Test/firstvpc.json --parameters ParameterKey=vpcid,ParameterValue=10.26.0.0/16 ParameterKey=subnetid,ParameterValue=10.26.0.0/24 ParameterKey=subnet2, ParameterValue=10.26.1.0/24'
+                sh label: '', script: 'aws cloudformation create-stack --stack-name myteststack --template-body file:///home/ansible/aws-path/workspace/AWS-Test/firstvpc.json --parameters ParameterKey=vpcid,ParameterValue=10.26.0.0/16 ParameterKey=subnetid,ParameterValue=10.26.0.0/24 ParameterKey=subnet2,ParameterValue=10.26.1.0/24'
             }
         }
         }        
