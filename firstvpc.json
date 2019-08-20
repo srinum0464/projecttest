@@ -2,20 +2,22 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "First JSON",
     "Parameters":{
-          
           "vpcid": {
               "Description": "Provide VPC-ID:",
               "Type": "String",
               "Default": "-"
-          },
-          
+          },          
           "subnetid": {
-              "Description": "Enter Subnet ID:",
+              "Description": "Enter Public Subnet ID:",
+              "Type": "String",
+              "Default": "-"
+          },          
+          "subnet2": {
+              "Description": "Enter Private Subnet ID:",
               "Type": "String",
               "Default": "-"
           }
-          
-    },
+         },
     "Resources":{
         
         "firstvpc": {
@@ -26,7 +28,7 @@
           }
         },
         
-        "firstsubnet": {
+        "publicsubnet": {
           "Type": "AWS::EC2::Subnet",
           "Properties": {
             "VpcId": 
@@ -35,9 +37,71 @@
             "CidrBlock": 
             { "Ref": "subnetid" }
             ,
-            "Tags": [{"Key": "Name","Value": "First-Subnet"}]
+            "Tags": [{"Key": "Name","Value": "Public-Subnet"}]
           }
-        }
+        },
+        
+        "privatesubnet": {
+          "Type": "AWS::EC2::Subnet",
+          "Properties": {
+            "AvailabilityZone": "-",
+            "VpcId": 
+            { "Ref": "firstvpc" }
+            ,
+            "CidrBlock": 
+            { "Ref": "subet2" }
+            ,
+            "Tags": [{"Key":"Name","Value":"Private-Subnet"}]
+          }
+        },
+        
+        "igw": {
+          "Type": "AWS::EC2::InternetGateway",
+          "Properties": {
+            "Tags": [{"Key":"Name","Value":"CF-Gateway"}]
+          }
+        },
+        "AttachGateway": {
+          "Type": "AWS::EC2::VPCGatewayAttachment",
+          "Properties": {
+            "VpcId": 
+            { "Ref": "firstvpc" }
+            ,
+            "InternetGatewayId": { "Ref": "igw" }
+          }
+        },
+        
+        "routetb": {
+          "Type": "AWS::EC2::RouteTable",
+          "Properties": {
+            "VpcId": 
+            { "Ref": "firstvpc" }
+            ,
+            "Tags": [{"Key":"Name","Value":"CF-Route Table"}]
+          }
+        },
+                
+        "route": {
+          "Type": "AWS::EC2::Route",
+          "Properties": {
+            "RouteTableId": 
+            { "Ref": "routetb" }
+            ,
+            "DestinationCidrBlock": "0.0.0.0/0",
+            "GatewayId": 
+            { "Ref": "igw" }
+            
+          }
+        },
+        
+        "routeTableAssocName": {
+          "Type": "AWS::EC2::SubnetRouteTableAssociation",
+          "Properties": {
+            "SubnetId": 
+            { "Ref": "publicsubnet" }
+            ,
+            "RouteTableId": "routetb"
+          }
+        }                     
     }            
-    
 }
