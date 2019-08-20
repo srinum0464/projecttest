@@ -1,0 +1,43 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "First JSON",
+    "Parameters":{
+          
+          "vpcid": {
+              "Description": "Provide VPC-ID:",
+              "Type": "String",
+              "Default": "-"
+          },
+          
+          "subnetid": {
+              "Description": "Enter Subnet ID:",
+              "Type": "String",
+              "Default": "-"
+          }
+          
+    },
+    "Resources":{
+        
+        "firstvpc": {
+          "Type": "AWS::EC2::VPC",
+          "Properties": {
+            "CidrBlock": { "Ref": "vpcid" }
+            
+          }
+        },
+        
+        "firstsubnet": {
+          "Type": "AWS::EC2::Subnet",
+          "Properties": {
+            "VpcId": 
+            { "Ref": "firstvpc" }
+            ,
+            "CidrBlock": 
+            { "Ref": "subnetid" }
+            ,
+            "Tags": [{"Key": "Name","Value": "First-Subnet"}]
+          }
+        }
+    }            
+    
+}
