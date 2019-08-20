@@ -4,12 +4,12 @@ pipeline{
         stage('git retrival'){
             agent{
                 node{
-                    label "Ansible"
+                    label "AWS-CLI"
                 }
             }
             steps{
                 git branch: 'ansible', credentialsId: 'd35878c4-1821-4902-966b-5785d600c3d3', url: 'https://github.com/srinum0464/projecttest.git'
-                sh label: '', script: 'ansible-playbook /home/ansible/workspace/Git_pipeline_scripted/apache.yml'
+                sh label: '', script: 'aws cloudformation create-stack --stack-name myteststack --template-body file:///home/ansible/aws-path/workspace/AWS-Test/vpc.json --parameters ParameterKey=vpcid,ParameterValue=10.26.0.0/16 ParameterKey=subnetid,ParameterValue=10.26.0.0/24'
             }
         }
         
