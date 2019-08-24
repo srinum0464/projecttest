@@ -2,33 +2,25 @@ pipeline{
     agent none
     stages{
         stage('git retrival'){
-            agent{
-                label "Ansible"
-                }
+            agent{label 'Ansible'}
             steps{
                 git branch: 'ansible', credentialsId: 'd35878c4-1821-4902-966b-5785d600c3d3', url: 'https://github.com/srinum0464/projecttest.git'
             }
         }
         stage('Infrastructure Automation'){
-            agent{
-                lable "AWS-CLI"
-                }
+            agent{lable 'AWS-CLI'}
             steps{
                 sh label: '', script: 'aws cloudformation create-stack-complete --stack-name Apachestack --template-body file:///home/ansible/workspace/Git_pipeline_scripted/apacheserver.json'
             }
         }
         stage('Hosts file and SSH Authentication'){
-            agent{
-                label "Ansible"
-                }
+            agent{label 'Ansible'}
             steps{
                 sh label: '', script: 'python home/ansible/workspace/Git_pipeline_scripted/ec2ip.py'
             }
         }
         stage('Apache Installation and HTML download'){
-            agent{
-                label "Ansible"
-                }
+            agent{label 'Ansible'}
             steps{
                 sh label: '', script: 'ansible-playbook -i /home/ansible/hosts /home/ansible/workspace/Git_pipeline_scripted/apache.yml'
             }
