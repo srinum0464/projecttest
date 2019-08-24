@@ -1,11 +1,10 @@
 ---
 - hosts: all
   sudo: yes
+  gather_facts: False
   tasks:
-  - name: update os
-    apt:
-      update_cache: yes
-    when: ansible_os_family == "Debian"
+  - name: "Auto ssh login"
+    command: 
   - name: install apache
     apt:
       name: apache2

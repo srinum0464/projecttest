@@ -5,8 +5,17 @@
           "vpcid": {
               "Description": "Provide VPC-ID:",
               "Type": "String",
-              "Default": "-"
+              "Default": "10.25.0.0/16",
+              "AllowedValues":["10.25.0.0/16","10.26.0.0/16","10.27.0.0/16"]
           },          
+          "publicsubnetaz": {
+              "Description": "Availability Subnet AZ:",
+              "Type": "AWS::EC2::AvailabilityZone::Name"
+          },          
+          "privatesubnetaz": {
+              "Description": "Private Subnet AZ:",
+              "Type": "AWS::EC2::AvailabilityZone::Name"
+          },      
           "subnetid": {
               "Description": "Enter Public Subnet ID:",
               "Type": "String",
@@ -19,42 +28,30 @@
           }
          },
     "Resources":{
-        
         "firstvpc": {
           "Type": "AWS::EC2::VPC",
           "Properties": {
-            "CidrBlock": { "Ref": "vpcid" }
-            
+            "CidrBlock": { "Ref": "vpcid" }  
           }
-        },
-        
+        },        
         "publicsubnet": {
           "Type": "AWS::EC2::Subnet",
           "Properties": {
-            "VpcId": 
-            { "Ref": "firstvpc" }
-            ,
-            "CidrBlock": 
-            { "Ref": "subnetid" }
-            ,
+            "VpcId": { "Ref": "firstvpc" },
+            "AvailabilityZone": "publicsubnetaz",
+            "CidrBlock":{ "Ref": "subnetid" },
             "Tags": [{"Key": "Name","Value": "Public-Subnet"}]
           }
-        },
-        
+        },        
         "privatesubnet": {
           "Type": "AWS::EC2::Subnet",
           "Properties": {
-            "AvailabilityZone": "-",
-            "VpcId": 
-            { "Ref": "firstvpc" }
-            ,
-            "CidrBlock": 
-            { "Ref": "subnet2" }
-            ,
+            "AvailabilityZone": "privatesubnetaz",
+            "VpcId":{ "Ref": "firstvpc" },
+            "CidrBlock":{ "Ref": "subnet2" },
             "Tags": [{"Key":"Name","Value":"Private-Subnet"}]
           }
         },
-        
         "igw": {
           "Type": "AWS::EC2::InternetGateway",
           "Properties": {
@@ -64,44 +61,45 @@
         "AttachGateway": {
           "Type": "AWS::EC2::VPCGatewayAttachment",
           "Properties": {
-            "VpcId": 
-            { "Ref": "firstvpc" }
-            ,
+            "VpcId":{ "Ref": "firstvpc" },
             "InternetGatewayId": { "Ref": "igw" }
           }
-        },
-        
+        },        
         "routetb": {
           "Type": "AWS::EC2::RouteTable",
           "Properties": {
-            "VpcId": 
-            { "Ref": "firstvpc" }
-            ,
+            "VpcId":{ "Ref": "firstvpc" },
             "Tags": [{"Key":"Name","Value":"CF-Route Table"}]
           }
-        },
-                
+        },                
         "route": {
           "Type": "AWS::EC2::Route",
           "Properties": {
-            "RouteTableId": 
-            { "Ref": "routetb" }
-            ,
+            "RouteTableId":{ "Ref": "routetb" },
             "DestinationCidrBlock": "0.0.0.0/0",
-            "GatewayId": 
-            { "Ref": "igw" }
-            
+            "GatewayId":{ "Ref": "igw" }            
           }
-        },
-        
+        },        
         "routeTableAssocName": {
           "Type": "AWS::EC2::SubnetRouteTableAssociation",
           "Properties": {
-            "SubnetId": 
-            { "Ref": "publicsubnet" }
-            ,
+            "SubnetId":{ "Ref": "publicsubnet" },
             "RouteTableId": "routetb"
           }
-        }                     
+        },
+        "apache-sec" : {
+          "Type" : "AWS::EC2::SecurityGroup",
+          "Properties" : {
+            "GroupDescription" : "-",
+            "SecurityGroupIngress" : [
+            { "IpProtocol" : "tcp", "FromPort" : "0", "ToPort" : "65535", "CidrIp" : "0.0.0.0/0" }
+            ],
+            "VpcId" : 
+            { "Ref": "firstvpc" }
+            ,
+            "Tags" :  [ {"Key": "Name","Value":"Apache-web"} ]
+          }
+        }     
+                             
     }            
 }

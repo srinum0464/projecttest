@@ -1,0 +1,22 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Apache Server automation",
+    "Resources":{
+        "apache": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "KeyName": "AWSKey",
+                "ImageId": "ami-03d3bc5ddecc060ce",
+                "InstanceType": "t2.micro",
+                "SecurityGroupIds" : ["sg-d4ae5288"],
+                "SubnetId": "subnet-16406571",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "Apache"
+                    }
+                ]
+        }
+    }
+}
+}
