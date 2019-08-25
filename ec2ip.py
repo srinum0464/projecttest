@@ -14,13 +14,13 @@ for instance in ec2.instances.all():
             ans_ip.append(instance.private_ip_address)
             
 
-with open('/home/ansible/hosts','a') as file:
+with open('/home/ansible/hosts','ab') as file:
     for i in ans_ip:
         if i not in ip:
             file.write(i)
             file.write('\r\n')
             print('written ip:',i)
-            with open('/etc/ssh/ssh_config','a') as ssh1:
+            with open('/etc/ssh/ssh_config','ab') as ssh1:
                 ssh1.write("\rHost"+"\r "+i)
                 ssh1.write('\r\n')
                 ssh1.write('\r    StrictHostKeyChecking no')
