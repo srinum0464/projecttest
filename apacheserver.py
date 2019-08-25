@@ -1,6 +1,4 @@
 import boto3
-from jedi.evaluate.context import instance
-from Tools.scripts.ptags import tags
 
 ec2 = boto3.resource('ec2')
 tags = [{'Key': 'Name','Value': 'Apache'}]
