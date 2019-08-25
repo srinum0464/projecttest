@@ -34,7 +34,7 @@ pipeline{
 }
 
             steps{
-                sh label: '', script: 'ansible-playbook -i /home/ansible/workspace/Apache-Server-Configuration-Pipeline/apache.yml'
+                sh label: '', script: 'ansible-playbook -i /home/ansible/hosts /home/ansible/workspace/Apache-Server-Configuration-Pipeline/apache.yml'
             }
         }
         
