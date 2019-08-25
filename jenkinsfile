@@ -36,6 +36,7 @@ pipeline{
             steps{
                 sh label: '', script: 'sudo rm /etc/ssh/ssh_config'
                 sh label: '', script: 'sudo cp /etc/ssh/ssh_config_original /etc/ssh/ssh_config'
+                sh label: '', script: 'sudo chmod 777 /etc/ssh/ssh_config'
             }
         }
         stage('Hosts file and SSH Authentication'){
