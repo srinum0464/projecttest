@@ -25,7 +25,7 @@ pipeline{
 }
 
             steps{
-                sh label: '', script: 'hosts_alter.sh'
+                sh label: '', script: '/home/ansible/workspace/Apache-Server-Configuration-Pipeline/hosts_alter.sh'
             }
         }
         stage('Removing History from SSH_Config file'){
