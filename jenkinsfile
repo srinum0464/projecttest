@@ -25,7 +25,7 @@ pipeline{
 }
 
             steps{
-                sh label: '', script: 'rm /home/ansible/hosts'
+                sh label: '', script: 'hosts_alter.sh'
             }
         }
         stage('Removing History from SSH_Config file'){
