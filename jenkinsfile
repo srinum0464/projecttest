@@ -16,7 +16,7 @@ pipeline{
 }
 
             steps{
-                sh label: '', script: 'python /home/ansible/workspace/Apache-Server Configuration Pipeline/apacheserver.py'
+                sh label: '', script: 'python /home/ansible/workspace/Apache-Server-Configuration-Pipeline/apacheserver.py'
             }
         }
         stage('Hosts file and SSH Authentication'){
@@ -25,7 +25,7 @@ pipeline{
 }
 
             steps{
-                sh label: '', script: 'python /home/ansible/workspace/Apache-Server Configuration Pipeline/ec2ip.py'
+                sh label: '', script: 'python /home/ansible/workspace/Apache-Server-Configuration-Pipeline/ec2ip.py'
             }
         }
         stage('Apache Installation and HTML download'){
@@ -34,7 +34,7 @@ pipeline{
 }
 
             steps{
-                sh label: '', script: 'ansible-playbook -i /home/ansible/workspace/Apache-Server Configuration Pipeline/apache.yml'
+                sh label: '', script: 'ansible-playbook -i /home/ansible/workspace/Apache-Server-Configuration-Pipeline/apache.yml'
             }
         }
         
