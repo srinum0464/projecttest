@@ -16,7 +16,7 @@ pipeline{
 }
 
             steps{
-                sh label: '', script: 'aws cloudformation deploy --template-file /home/ansible/workspace/Apache-Server Configuration Pipeline/apacheserver.json --stack-name Apache-server-deployment'
+                sh label: '', script: 'python /home/ansible/workspace/Apache-Server Configuration Pipeline/apacheserver.py'
             }
         }
         stage('Hosts file and SSH Authentication'){
