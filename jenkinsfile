@@ -19,6 +19,25 @@ pipeline{
                 sh label: '', script: 'python /home/ansible/workspace/Apache-Server-Configuration-Pipeline/apacheserver.py'
             }
         }
+        stage('Removing Hosts File'){
+            agent {
+  label 'Ansible'
+}
+
+            steps{
+                sh label: '', script: 'rm /home/ansible/hosts'
+            }
+        }
+        stage('Removing History from SSH_Config file'){
+            agent {
+  label 'Ansible'
+}
+
+            steps{
+                sh label: '', script: 'rm /etc/ssh/ssh_config'
+                sh label: '', script: 'sudo cp /etc/ssh/ssh_config_original /etc/ssh/ssh_config'
+            }
+        }
         stage('Hosts file and SSH Authentication'){
             agent {
   label 'Ansible'
@@ -37,6 +56,7 @@ pipeline{
                 sh label: '', script: 'ansible-playbook -i /home/ansible/hosts /home/ansible/workspace/Apache-Server-Configuration-Pipeline/apache.yml'
             }
         }
+        
         
     }
 }
