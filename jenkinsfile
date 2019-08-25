@@ -34,7 +34,7 @@ pipeline{
 }
 
             steps{
-                sh label: '', script: 'rm /etc/ssh/ssh_config'
+                sh label: '', script: 'sudo rm /etc/ssh/ssh_config'
                 sh label: '', script: 'sudo cp /etc/ssh/ssh_config_original /etc/ssh/ssh_config'
             }
         }
